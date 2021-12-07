@@ -7,9 +7,19 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+.container {
+  margin-top: 50px;
+}
+
 .cryptoInput {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
 
+.greenCol {
+  background-color: #caffca;
+}
+.redCol {
+  background-color: #ffafaf;
 }

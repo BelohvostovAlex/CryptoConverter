@@ -1,5 +1,4 @@
 import React from 'react';
-import axios from 'axios';
 
 import { CryptoTable, CryptoConverter } from './Components';
 
@@ -7,43 +6,39 @@ import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 
 import { tCoin } from './types';
+import stores from './stores';
+import { observer } from 'mobx-react-lite';
 
 
 
-function App() {
+const App = observer(() => {
 const [coins, setCoins] = React.useState<tCoin[]>([])
-React.useEffect(() => {
-  async function getData () {
-    const { data } = await axios.get('https://min-api.cryptocompare.com/data/top/totalvolfull?limit=10&tsym=USD')
-    const { Data } = await data
 
-    const dataCoins: tCoin[] = Data.slice(1).map((coin: any) => {
-      const obj: tCoin = {
-        fullname: coin.CoinInfo.FullName,
-        imgUrl: `https://www.cryptocompare.com/${coin.CoinInfo.ImageUrl}`, 
-        name: coin.CoinInfo.Name,
-        price: (coin.RAW.USD.PRICE).toFixed(2),
-        volume: parseInt(coin.RAW.USD.VOLUME24HOUR)
-      }
-      return obj
-    })
-    setCoins(dataCoins)
-  }
-  getData()
+React.useEffect(() => {
+ fetchCoins()
 }, [])
 
+async function fetchCoins() {
+  try {
+    await stores.CurrencyStore.fetchItems()
+    setCoins(stores.CurrencyStore.items)
+  } catch (error) {
+    alert(error)
+  }
+}
+
   return (
-    <Container maxWidth="lg">
+    <Container maxWidth="lg" className="container">
       <Grid container spacing={2}>
         <Grid item xs={8}>
          <CryptoTable items={coins}/>
         </Grid>
         <Grid item xs={4}>
-          <CryptoConverter />
+          <CryptoConverter items={coins}/>
         </Grid>
       </Grid>
     </Container>
   );
-}
+})
 
 export default App;

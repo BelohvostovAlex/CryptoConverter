@@ -8,6 +8,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Typography from '@mui/material/Typography';
+import { tCoin } from '../../types';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
@@ -16,7 +17,13 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
-function CryptoConverter() {
+interface ICryptoConverter {
+  items: tCoin[]
+}
+
+function CryptoConverter({items}:ICryptoConverter) {
+  const coinsName:string[] = items.map(item => item.name)
+  console.log(coinsName)
   return (
     <Item>
       <div className="cryptoInput">
@@ -26,14 +33,9 @@ function CryptoConverter() {
           <Select
             labelId="demo-simple-select-helper-label"
             id="demo-simple-select-helper"
-            value={20}
-            label="Age">
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
+            value={coinsName[0]}
+            label="Curr">
+              {coinsName.map(name => <MenuItem key={name} value={name}>{name}</MenuItem>)}
           </Select>
         </FormControl>
       </div>
@@ -44,14 +46,9 @@ function CryptoConverter() {
           <Select
             labelId="demo-simple-select-helper-label"
             id="demo-simple-select-helper"
-            value={20}
-            label="Age">
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
+            value={coinsName[1]}
+            label="Curr">
+              {coinsName.map(name => <MenuItem key={name} value={name}>{name}</MenuItem>)}
           </Select>
         </FormControl>
       </div>

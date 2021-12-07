@@ -14,7 +14,12 @@ interface ICryptoTable {
   items: tCoin[];
 }
 
-function CryptoTable({ items }: ICryptoTable) {
+const colors: {[key: string]: string} = {
+  red: '#ffafaf',
+  green: '#caffca'
+}
+
+const CryptoTable = ({ items }: ICryptoTable) => {
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -41,8 +46,8 @@ function CryptoTable({ items }: ICryptoTable) {
                   <TableCell align="center">
                     <img width={18} height={18} src={coin.imgUrl} alt="Coin icon" />
                   </TableCell>
-                  <TableCell align="center">{coin.fullname}</TableCell>
-                  <TableCell align="center">{coin.name}</TableCell>
+                  <TableCell style={{backgroundColor: colors.red}} align="center">{coin.fullname}</TableCell>
+                  <TableCell style={{backgroundColor: colors.green}} align="center">{coin.name}</TableCell>
                   <TableCell align="center">{coin.price}$</TableCell>
                   <TableCell align="center">{coin.volume}$</TableCell>
                 </TableRow>
