@@ -15,8 +15,19 @@ const App = observer(() => {
 const [coins, setCoins] = React.useState<tCoin[]>([])
 
 React.useEffect(() => {
- fetchCoins()
+  if(stores.CurrencyStore) {
+    fetchCoins()
+  }
+  const coinsInterval = setInterval(() => {
+    fetchCoins()
+   },60000)
+   
+   return function () {
+    clearInterval(coinsInterval)
+   }
 }, [])
+
+
 
 async function fetchCoins() {
   try {
@@ -31,7 +42,7 @@ async function fetchCoins() {
     <Container maxWidth="lg" className="container">
       <Grid container spacing={2}>
         <Grid item xs={8}>
-         <CryptoTable items={coins}/>
+         <CryptoTable items={coins} />
         </Grid>
         <Grid item xs={4}>
           <CryptoConverter items={coins}/>

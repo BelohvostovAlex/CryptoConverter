@@ -23,3 +23,7 @@ body {
 .redCol {
   background-color: #ffafaf;
 }
+
+.rowClickable {
+  cursor: pointer;
+}

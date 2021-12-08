@@ -10,6 +10,10 @@ import FormControl from '@mui/material/FormControl';
 import Typography from '@mui/material/Typography';
 import { tCoin } from '../../types';
 
+import { observer } from 'mobx-react-lite';
+
+import stores from '../../stores';
+
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
   padding: theme.spacing(1),
@@ -21,19 +25,19 @@ interface ICryptoConverter {
   items: tCoin[]
 }
 
-function CryptoConverter({items}:ICryptoConverter) {
+const CryptoConverter = observer(({items}:ICryptoConverter) => {
   const coinsName:string[] = items.map(item => item.name)
-  console.log(coinsName)
+  const [selectedOutCoin, setSelectedOutCoin] = React.useState('USD')
   return (
     <Item>
       <div className="cryptoInput">
-        <TextField id="outlined-search" label="Amount" type="search" />
+        <TextField id="outlined-search" label="Amount" type="search" value={1 || ''}/>
         <FormControl sx={{ m: 1, minWidth: 120 }}>
           <InputLabel id="demo-simple-select-helper-label">Curr</InputLabel>
           <Select
             labelId="demo-simple-select-helper-label"
             id="demo-simple-select-helper"
-            value={coinsName[0]}
+            value={stores.ConverterStore.selectedCoin.name || coinsName[0] || ''}
             label="Curr">
               {coinsName.map(name => <MenuItem key={name} value={name}>{name}</MenuItem>)}
           </Select>
@@ -46,8 +50,10 @@ function CryptoConverter({items}:ICryptoConverter) {
           <Select
             labelId="demo-simple-select-helper-label"
             id="demo-simple-select-helper"
-            value={coinsName[1]}
-            label="Curr">
+            value={selectedOutCoin || ''}
+            label="Curr"
+            onChange={(e) => setSelectedOutCoin(e.target.value)}>
+              <MenuItem value='USD'>USD</MenuItem>
               {coinsName.map(name => <MenuItem key={name} value={name}>{name}</MenuItem>)}
           </Select>
         </FormControl>
@@ -57,6 +63,6 @@ function CryptoConverter({items}:ICryptoConverter) {
       </Typography>
     </Item>
   );
-}
+})
 
 export default CryptoConverter;
