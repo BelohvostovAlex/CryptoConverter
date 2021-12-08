@@ -15,10 +15,17 @@ class ConverterStore {
         makeAutoObservable(this)
     }
 
+
     setSelectedCoin(coin:tCoin) {
         this.selectedCoin = {
             name: coin.name,
             price: coin.price
+        }
+    }
+    setSelectedCoinOnChange(obj:TSelectedCoin) {
+        this.selectedCoin = {
+            name: obj.name,
+            price: obj.price
         }
     }
 

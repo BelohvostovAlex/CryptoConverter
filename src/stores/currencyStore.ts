@@ -2,25 +2,6 @@ import { makeAutoObservable } from "mobx";
 import { tCoin } from "../types";
 import axios from "axios";
 
-// class CurrencyStore {
-//     constructor(initItems: tCoin[] = []) {
-//         this.items = initItems
-//     }
-//     @observable public items: tCoin[] ;
-
-//     @computed 
-//     get getItems() {
-//         return this.items
-//     }
-
-//     @action 
-//     setItems = (items: tCoin[]): void => {
-//         this.items = items
-//     }
-// }
-
-// export default CurrencyStore
-
 class CurrencyStore {
     items: tCoin[] = []
     constructor() {
@@ -30,7 +11,7 @@ class CurrencyStore {
         return this.items
     }
     async fetchItems(): Promise<any> {
-        const { data } = await axios.get('https://min-api.cryptocompare.com/data/top/totalvolfull?limit=10&tsym=USD')
+        const { data } = await axios.get('https://min-api.cryptocompare.com/data/top/totalvolfull?limit=20&tsym=USD')
         const { Data } = await data
     
         this.items = Data.map((coin: any) => {

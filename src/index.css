@@ -27,3 +27,14 @@ body {
 .rowClickable {
   cursor: pointer;
 }
+
+.converter {
+  position: fixed;
+}
+
+.outPutText {
+  margin-top: 20px !important;
+  border-radius: 4px;
+  background-color:#212049;
+  color: white;
+}

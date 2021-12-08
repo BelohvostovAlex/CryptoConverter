@@ -20,7 +20,7 @@ React.useEffect(() => {
   }
   const coinsInterval = setInterval(() => {
     fetchCoins()
-   },60000)
+   },30000)
    
    return function () {
     clearInterval(coinsInterval)

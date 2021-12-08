@@ -27,39 +27,70 @@ interface ICryptoConverter {
 
 const CryptoConverter = observer(({items}:ICryptoConverter) => {
   const coinsName:string[] = items.map(item => item.name)
-  const [selectedOutCoin, setSelectedOutCoin] = React.useState('USD')
+  const [selectedOutCoin, setSelectedOutCoin] = React.useState('ETH')
+
+
+  const [amountIn, setAmountIn] = React.useState('')
+  console.log(amountIn)
+  const [amountOut,setAmountOut] = React.useState('')
+  
+  function handleAmountOut() {
+    const sum = +amountIn * stores.ConverterStore.selectedCoin.price
+    const sumOut:any = JSON.parse(JSON.stringify(items.find(item => item.name === selectedOutCoin)))
+    const result = (sum / sumOut.price).toFixed(3)
+    setAmountOut(result)
+  }
+  function handleAmountIn() {
+
+  }
+  function handleSelectedCoinIn(e:any) {
+    stores.ConverterStore.setSelectedCoinOnChange({
+      name: e.target.value,
+      price: JSON.parse(JSON.stringify(items.find(item => item.name === e.target.value))).price
+    })
+    console.log(stores.ConverterStore.selectedCoin)
+  }
+
+  React.useEffect(() => {
+    if(amountIn) {
+      handleAmountOut()
+    }
+
+  }, [stores.ConverterStore.selectedCoin.name, selectedOutCoin, amountIn])
   return (
-    <Item>
+    <Item className="converter">
       <div className="cryptoInput">
-        <TextField id="outlined-search" label="Amount" type="search" value={1 || ''}/>
+        <TextField id="outlined-search" label="Amount" type="number" value={amountIn} onChange={(e) => setAmountIn(e.target.value)}/>
         <FormControl sx={{ m: 1, minWidth: 120 }}>
           <InputLabel id="demo-simple-select-helper-label">Curr</InputLabel>
           <Select
             labelId="demo-simple-select-helper-label"
             id="demo-simple-select-helper"
-            value={stores.ConverterStore.selectedCoin.name || coinsName[0] || ''}
-            label="Curr">
+            value={stores.ConverterStore.selectedCoin.name}
+            label="Curr"
+            onChange={(e) => handleSelectedCoinIn(e)}>
               {coinsName.map(name => <MenuItem key={name} value={name}>{name}</MenuItem>)}
           </Select>
         </FormControl>
       </div>
       <div className="cryptoInput">
-        <TextField id="outlined-search" label="Amount" type="search" />
+        <TextField id="outlined-search" label="Amount" type="text" value={amountOut}/>
         <FormControl sx={{ m: 1, minWidth: 120 }}>
           <InputLabel id="demo-simple-select-helper-label">Curr</InputLabel>
           <Select
             labelId="demo-simple-select-helper-label"
             id="demo-simple-select-helper"
-            value={selectedOutCoin || ''}
+            value={selectedOutCoin}
             label="Curr"
             onChange={(e) => setSelectedOutCoin(e.target.value)}>
-              <MenuItem value='USD'>USD</MenuItem>
               {coinsName.map(name => <MenuItem key={name} value={name}>{name}</MenuItem>)}
           </Select>
         </FormControl>
       </div>
-      <Typography variant="h5" gutterBottom component="div">
-        77.24 Белорусский рубль
+      <Typography variant="h5" gutterBottom component="div" className="outPutText">
+       {amountIn ? 
+        `${(stores.ConverterStore.selectedCoin.price * +amountIn).toFixed(2)} USD`
+      : 'total in USD'}
       </Typography>
     </Item>
   );
