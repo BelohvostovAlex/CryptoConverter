@@ -27,23 +27,20 @@ interface ICryptoConverter {
 
 const CryptoConverter = observer(({items}:ICryptoConverter) => {
   const coinsName:string[] = items.map(item => item.name)
-  const [selectedOutCoin, setSelectedOutCoin] = React.useState('ETH')
+  const [selectedOutCoin, setSelectedOutCoin] = React.useState<string>('ETH')
 
 
-  const [amountIn, setAmountIn] = React.useState('')
-  console.log(amountIn)
-  const [amountOut,setAmountOut] = React.useState('')
+  const [amountIn, setAmountIn] = React.useState<string>('')
+  const [amountOut,setAmountOut] = React.useState<string>('')
   
   function handleAmountOut() {
-    const sum = +amountIn * stores.ConverterStore.selectedCoin.price
-    const sumOut:any = JSON.parse(JSON.stringify(items.find(item => item.name === selectedOutCoin)))
-    const result = (sum / sumOut.price).toFixed(3)
+    const sum:number = +amountIn * stores.ConverterStore.selectedCoin.price
+    const sumOut:tCoin = JSON.parse(JSON.stringify(items.find(item => item.name === selectedOutCoin)))
+    const result:string = (sum / sumOut.price).toFixed(3)
     setAmountOut(result)
   }
-  function handleAmountIn() {
 
-  }
-  function handleSelectedCoinIn(e:any) {
+  function handleSelectedCoinIn(e: any) {
     stores.ConverterStore.setSelectedCoinOnChange({
       name: e.target.value,
       price: JSON.parse(JSON.stringify(items.find(item => item.name === e.target.value))).price
